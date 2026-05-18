@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const TITLE_ID = process.env.NEXT_PUBLIC_PLAYFAB_TITLE_ID || "";
 const VIEWER_ID = "viewer-account";
@@ -46,20 +46,24 @@ export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const sessionTicketRef = useRef("");
+  const loginRequestRef = useRef<Promise<string> | null>(null);
+  const leaderboardCacheRef = useRef<Partial<Record<Period, LeaderboardEntry[]>>>({});
+  const leaderboardRequestsRef = useRef<Partial<Record<Period, Promise<LeaderboardEntry[]>>>>({});
+  const activeRequestIdRef = useRef(0);
 
   const resetLabel = useMemo(() => "17h 45m 58s", []);
 
-  const loadLeaderboard = useCallback(async () => {
-    if (!TITLE_ID) {
-      setLeaderboard(FALLBACK_LEADERBOARD);
-      setLoading(false);
-      return;
+  const getSessionTicket = useCallback(async () => {
+    if (sessionTicketRef.current) {
+      return sessionTicketRef.current;
     }
 
-    try {
-      setLoading(true);
-      setError("");
+    if (loginRequestRef.current) {
+      return loginRequestRef.current;
+    }
 
+    loginRequestRef.current = (async () => {
       const loginRes = await fetch(
         `https://${TITLE_ID}.playfabapi.com/Client/LoginWithCustomID`,
         {
@@ -76,45 +80,124 @@ export default function Leaderboard() {
       );
 
       const loginData = await loginRes.json();
-      const sessionTicket = loginData.data.SessionTicket;
 
-      const lbRes = await fetch(
-        `https://${TITLE_ID}.playfabapi.com/Client/GetLeaderboard`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Authorization": sessionTicket,
-          },
-          body: JSON.stringify({
-            StatisticName: STATS[activePeriod],
-            StartPosition: 0,
-            MaxResultsCount: 10,
-            ProfileConstraints: {
-              ShowDisplayName: true,
-              ShowAvatarUrl: true,
+      if (!loginRes.ok || !loginData.data?.SessionTicket) {
+        throw new Error(loginData.errorMessage || "PlayFab login failed");
+      }
+
+      sessionTicketRef.current = loginData.data.SessionTicket;
+      return sessionTicketRef.current;
+    })().finally(() => {
+      loginRequestRef.current = null;
+    });
+
+    return loginRequestRef.current;
+  }, []);
+
+  const fetchLeaderboard = useCallback(
+    async (period: Period) => {
+      const cachedLeaderboard = leaderboardCacheRef.current[period];
+      if (cachedLeaderboard) {
+        return cachedLeaderboard;
+      }
+
+      const currentRequest = leaderboardRequestsRef.current[period];
+      if (currentRequest) {
+        return currentRequest;
+      }
+
+      const request = (async () => {
+        const sessionTicket = await getSessionTicket();
+
+        const lbRes = await fetch(
+          `https://${TITLE_ID}.playfabapi.com/Client/GetLeaderboard`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Authorization": sessionTicket,
             },
-          }),
-        }
-      );
+            body: JSON.stringify({
+              StatisticName: STATS[period],
+              StartPosition: 0,
+              MaxResultsCount: 10,
+              ProfileConstraints: {
+                ShowDisplayName: true,
+                ShowAvatarUrl: true,
+              },
+            }),
+          }
+        );
 
-      const lbData = await lbRes.json();
-      setLeaderboard(lbData.data?.Leaderboard?.length ? lbData.data.Leaderboard : FALLBACK_LEADERBOARD);
+        const lbData = await lbRes.json();
+
+        if (!lbRes.ok) {
+          throw new Error(lbData.errorMessage || "PlayFab leaderboard failed");
+        }
+
+        const nextLeaderboard = lbData.data?.Leaderboard?.length
+          ? lbData.data.Leaderboard
+          : FALLBACK_LEADERBOARD;
+
+        leaderboardCacheRef.current[period] = nextLeaderboard;
+        return nextLeaderboard;
+      })().finally(() => {
+        delete leaderboardRequestsRef.current[period];
+      });
+
+      leaderboardRequestsRef.current[period] = request;
+      return request;
+    },
+    [getSessionTicket]
+  );
+
+  const loadLeaderboard = useCallback(async () => {
+    if (!TITLE_ID) {
+      setLeaderboard(FALLBACK_LEADERBOARD);
+      setLoading(false);
+      return;
+    }
+
+    const requestId = activeRequestIdRef.current + 1;
+    activeRequestIdRef.current = requestId;
+    const period = activePeriod;
+    const cachedLeaderboard = leaderboardCacheRef.current[period];
+
+    try {
+      setLoading(!cachedLeaderboard);
+      setError("");
+
+      const nextLeaderboard = await fetchLeaderboard(period);
+
+      if (activeRequestIdRef.current === requestId) {
+        setLeaderboard(nextLeaderboard);
+      }
     } catch (err) {
       console.error(err);
-      setLeaderboard(FALLBACK_LEADERBOARD);
-      setError("Showing sample leaderboard");
+      if (activeRequestIdRef.current === requestId) {
+        setLeaderboard(FALLBACK_LEADERBOARD);
+        setError("Showing sample leaderboard");
+      }
     } finally {
-      setLoading(false);
+      if (activeRequestIdRef.current === requestId) {
+        setLoading(false);
+      }
     }
-  }, [activePeriod]);
+  }, [activePeriod, fetchLeaderboard]);
 
   useEffect(() => {
-    void Promise.resolve().then(loadLeaderboard);
+    const timeoutId = window.setTimeout(() => {
+      void loadLeaderboard();
+    }, 180);
+
+    return () => window.clearTimeout(timeoutId);
   }, [loadLeaderboard]);
 
   return (
-    <section className="jungle-section relative isolate z-20 px-3 py-16 lg:py-24 text-white sm:px-6 lg:px-10">
+    <section
+      id="leaderboard"
+      className="jungle-section relative isolate z-20 scroll-mt-20 px-4 py-16 text-white sm:px-6 lg:px-10 lg:py-24"
+    >
       <Image
         src="/images/section-pattern.png"
         alt=""
@@ -151,7 +234,7 @@ export default function Leaderboard() {
           </p>
         </header>
 
-        <div className="leaderboard-panel relative min-h-[720px] overflow-hidden rounded-t-[14px] rounded-b-[18px] border-2 border-[#a85d36] bg-[#2a0f04]/88 pt-20 shadow-[0_20px_70px_rgba(0,0,0,0.65)]">
+        <div className="leaderboard-panel relative min-h-[640px] overflow-hidden rounded-t-[14px] rounded-b-[18px] border-2 border-[#a85d36] bg-[#2a0f04]/88 pt-18 shadow-[0_20px_70px_rgba(0,0,0,0.65)] sm:min-h-[720px] sm:pt-20">
           <Image
             src="/images/hero.png"
             alt=""
@@ -161,7 +244,7 @@ export default function Leaderboard() {
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(72,31,5,0.78),rgba(43,13,2,0.92)),radial-gradient(circle_at_50%_20%,rgba(210,139,35,0.22),transparent_34%)]" />
 
-          <div className="relative z-10 px-4 pb-28 sm:px-5">
+          <div className="relative z-10 px-3 pb-24 sm:px-5 sm:pb-28">
             {loading ? (
               <p className="font-marker text-center text-xl text-[#ffe6ad]">Loading leaderboard...</p>
             ) : (
@@ -177,7 +260,7 @@ export default function Leaderboard() {
             ) : null}
           </div>
 
-          <nav className="absolute inset-x-0 bottom-0 z-20 grid h-[74px] grid-cols-3 border-t border-[#5b2b0e] bg-[#743207] font-marker text-lg text-white sm:text-xl">
+          <nav className="absolute inset-x-0 bottom-0 z-20 grid h-16 grid-cols-3 border-t border-[#5b2b0e] bg-[#743207] font-marker text-base text-white sm:h-[74px] sm:text-xl">
             {(["daily", "weekly", "monthly"] as Period[]).map((period) => (
               <button
                 key={period}
@@ -212,13 +295,13 @@ function LeaderboardRow({ player }: { player: LeaderboardEntry }) {
   const initials = name.slice(0, 2).toUpperCase();
 
   return (
-    <li className="leaderboard-row relative flex min-h-[66px] items-center rounded-r-[18px] border border-[#c66b16] bg-[linear-gradient(180deg,#bd6b08,#965004)] pl-9 pr-4 shadow-[inset_0_2px_0_rgba(255,206,83,0.25),0_5px_12px_rgba(0,0,0,0.28)]">
+    <li className="leaderboard-row relative flex min-h-[60px] items-center rounded-r-[16px] border border-[#c66b16] bg-[linear-gradient(180deg,#bd6b08,#965004)] pl-7 pr-3 shadow-[inset_0_2px_0_rgba(255,206,83,0.25),0_5px_12px_rgba(0,0,0,0.28)] sm:min-h-[66px] sm:rounded-r-[18px] sm:pl-9 sm:pr-4">
       <span className="leaderboard-row-pointer" />
-      <span className="w-8 shrink-0 text-center font-marker text-2xl text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)]">
+      <span className="w-6 shrink-0 text-center font-marker text-xl text-white drop-shadow-[0_2px_0_rgba(0,0,0,0.7)] sm:w-8 sm:text-2xl">
         {player.Position + 1}
       </span>
 
-      <span className="mx-4 flex h-[70px] w-[70px] shrink-0 items-center justify-center rounded-full border-[5px] border-[#f1d7cf] bg-[#6b2a17] shadow-[0_5px_10px_rgba(0,0,0,0.42)]">
+      <span className="mx-3 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-4 border-[#f1d7cf] bg-[#6b2a17] shadow-[0_5px_10px_rgba(0,0,0,0.42)] sm:mx-4 sm:h-[70px] sm:w-[70px] sm:border-[5px]">
         {avatarUrl ? (
           <span
             aria-label=""
@@ -226,14 +309,14 @@ function LeaderboardRow({ player }: { player: LeaderboardEntry }) {
             style={{ backgroundImage: `url(${avatarUrl})` }}
           />
         ) : (
-          <span className="leaderboard-avatar flex h-full w-full items-center justify-center rounded-full font-marker text-xl text-white">
+          <span className="leaderboard-avatar flex h-full w-full items-center justify-center rounded-full font-marker text-base text-white sm:text-xl">
             {initials}
           </span>
         )}
       </span>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate font-marker text-lg text-white drop-shadow-[0_3px_0_rgba(0,0,0,0.55)] sm:text-xl">
+        <p className="truncate font-marker text-base text-white drop-shadow-[0_3px_0_rgba(0,0,0,0.55)] sm:text-xl">
           {name}
         </p>
         <div className="mt-1 flex items-center gap-2 font-poets text-sm text-[#f4e36d]">
