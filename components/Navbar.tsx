@@ -24,9 +24,9 @@ export default function Navbar() {
   }, [isMenuOpen]);
 
   const navItems = [
-    { label: "home", href: "#home" },
-    { label: "leaderboard", href: "#leaderboard" },
-    { label: "about", href: "#about" },
+    { label: "Home", href: "#home" },
+    { label: "Leaderboard", href: "#leaderboard" },
+    { label: "About", href: "#about" },
   ];
 
   return (
