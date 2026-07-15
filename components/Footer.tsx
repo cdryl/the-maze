@@ -20,7 +20,7 @@ export default function Footer() {
         className="pointer-events-none -z-20 object-cover opacity-60"
       />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(223,151,47,0.18),transparent_28%),linear-gradient(180deg,rgba(0,0,0,0.92),rgba(2,8,5,0.7)_42%,rgba(0,0,0,0.96))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-[#010302] via-[#010302]/76 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 bg-gradient-to-b from-[#010302] via-[#010302]/54 to-transparent sm:h-40 sm:via-[#010302]/76" />
 
       <div className="relative mx-auto max-w-6xl">
         <div className="grid gap-10 pt-10 md:grid-cols-[1.1fr_1fr_1fr] md:items-start">

@@ -16,7 +16,7 @@ export default function Hero() {
       />
 
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_35%,rgba(248,181,61,0.16),transparent_24%),linear-gradient(90deg,rgba(0,0,0,0.82),rgba(0,0,0,0.28)_36%,rgba(0,0,0,0.18)_62%,rgba(0,0,0,0.75)),linear-gradient(180deg,rgba(2,7,4,0.6),rgba(2,7,4,0.08)_42%,#030805_100%)]" />
-      <div className="absolute inset-x-0 -bottom-px -z-10 h-80 bg-[linear-gradient(0deg,#000_0%,#000_24%,rgba(0,0,0,0.74)_62%,transparent_100%)]" />
+      <div className="absolute inset-x-0 -bottom-px -z-10 h-44 bg-[linear-gradient(0deg,#000_0%,rgba(0,0,0,0.78)_24%,rgba(0,0,0,0.38)_62%,transparent_100%)] sm:h-80 sm:bg-[linear-gradient(0deg,#000_0%,#000_24%,rgba(0,0,0,0.74)_62%,transparent_100%)]" />
       <div className="hero-vignette absolute inset-0 -z-10" />
       <Image
         src="/images/leaves.png"

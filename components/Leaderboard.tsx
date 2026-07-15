@@ -206,8 +206,8 @@ export default function Leaderboard() {
         className="pointer-events-none -z-20 object-cover opacity-65"
       />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_6%,rgba(222,142,36,0.18),transparent_30%),linear-gradient(180deg,rgba(2,8,4,0.72),rgba(2,7,4,0.54)_34%,rgba(2,5,3,0.84))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-44 bg-gradient-to-b from-[#030805] via-[#030805]/72 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-[#030805] via-[#030805]/58 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-[#030805] via-[#030805]/56 to-transparent sm:h-44 sm:via-[#030805]/72" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-[#030805] via-[#030805]/46 to-transparent sm:h-40 sm:via-[#030805]/58" />
       <div className="relative mx-auto max-w-[560px]">
         <header className="relative z-10 -mb-4 text-center">
           <div className="inline-flex items-center justify-center gap-1 sm:gap-2">

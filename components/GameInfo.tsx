@@ -32,8 +32,8 @@ export default function GameInfo() {
         className="pointer-events-none -z-20 object-cover opacity-75"
       />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_4%,rgba(223,151,47,0.22),transparent_28%),radial-gradient(circle_at_80%_42%,rgba(56,93,33,0.2),transparent_24%),linear-gradient(180deg,rgba(2,6,4,0.74),rgba(2,8,5,0.58)_42%,rgba(1,3,2,0.88))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-44 bg-gradient-to-b from-[#030805] via-[#030805]/68 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-60 bg-[linear-gradient(0deg,#000_0%,#000_30%,rgba(0,0,0,0.72)_64%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-[#030805] via-[#030805]/50 to-transparent sm:h-44 sm:via-[#030805]/68" />
+      <div className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-40 bg-[linear-gradient(0deg,#000_0%,rgba(0,0,0,0.76)_28%,rgba(0,0,0,0.36)_64%,transparent_100%)] sm:h-60 sm:bg-[linear-gradient(0deg,#000_0%,#000_30%,rgba(0,0,0,0.72)_64%,transparent_100%)]" />
       <div className="relative mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl">
           <h2 className="font-anton text-[clamp(2.35rem,8vw,5.8rem)] leading-[0.9] text-[#f4ead3] hero-title">
