@@ -23,7 +23,7 @@ export default function Footer() {
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-[#010302] via-[#010302]/76 to-transparent" />
 
       <div className="relative mx-auto max-w-6xl">
-        <div className="grid gap-10 border-t border-[#8f662d]/35 pt-10 md:grid-cols-[1.1fr_1fr_1fr] md:items-start">
+        <div className="grid gap-10 pt-10 md:grid-cols-[1.1fr_1fr_1fr] md:items-start">
           <div className="text-center md:text-left">
             <Image
               src="/images/logo_512x512.png"
