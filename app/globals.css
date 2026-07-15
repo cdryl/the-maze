@@ -22,6 +22,7 @@
 }
 
 html {
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
@@ -63,6 +64,7 @@ html {
 }
 
 body {
+  width: 100%;
   overflow-x: hidden;
 }
 
@@ -360,6 +362,85 @@ body {
 .game-info-card > * {
   position: relative;
   z-index: 2;
+}
+
+.faq-card {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(143, 102, 45, 0.72);
+  border-radius: 8px;
+  padding: 20px;
+  background:
+    linear-gradient(135deg, rgba(255, 236, 155, 0.08), transparent 22%),
+    radial-gradient(circle at 50% 0%, rgba(203, 133, 37, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(21, 32, 21, 0.94), rgba(10, 15, 10, 0.96));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 220, 128, 0.12),
+    inset 0 -32px 54px rgba(0, 0, 0, 0.38),
+    0 16px 30px rgba(0, 0, 0, 0.32);
+}
+
+.faq-pattern-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -20;
+  pointer-events: none;
+  background-image: url("/images/section-pattern.png");
+  background-position: center top;
+  background-repeat: repeat-y;
+  background-size: max(100vw, 960px) auto;
+  opacity: 0.7;
+}
+
+.faq-card::before {
+  position: absolute;
+  inset: 7px;
+  content: "";
+  pointer-events: none;
+  border: 1px solid rgba(40, 64, 29, 0.85);
+  border-radius: 5px;
+}
+
+.faq-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.faq-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-toggle {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(207, 138, 27, 0.75);
+  border-radius: 999px;
+  background: rgba(6, 16, 9, 0.72);
+  box-shadow: 0 0 12px rgba(235, 157, 26, 0.22);
+}
+
+.faq-toggle::before,
+.faq-toggle::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 2px;
+  content: "";
+  border-radius: 999px;
+  background: #f0b33e;
+  transform: translate(-50%, -50%);
+}
+
+.faq-toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: opacity 160ms ease;
+}
+
+.faq-card[open] .faq-toggle::after {
+  opacity: 0;
 }
 
 .game-info-corner {

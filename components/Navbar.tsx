@@ -25,8 +25,11 @@ export default function Navbar() {
 
   const navItems = [
     { label: "Home", href: "#home" },
+    { label: "Prizes", href: "#prizes" },
     { label: "Leaderboard", href: "#leaderboard" },
     { label: "About", href: "#about" },
+    { label: "How To Play", href: "#how-to-play" },
+    { label: "FAQ", href: "#faq" },
   ];
 
   return (
@@ -46,7 +49,7 @@ export default function Navbar() {
           />
         </div>
 
-        <div className="hidden gap-8 md:flex md:gap-12">
+        <div className="hidden gap-7 lg:flex xl:gap-10">
           {navItems.map((item) => (
             <a
               key={item.href}
@@ -63,7 +66,7 @@ export default function Navbar() {
           aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={isMenuOpen}
           onClick={() => setIsMenuOpen((open) => !open)}
-          className="relative z-10 flex h-12 w-12 items-center justify-center rounded-lg border border-[#b98524]/45 bg-[#07110a]/72 shadow-[inset_0_0_18px_rgba(255,185,65,0.08),0_8px_24px_rgba(0,0,0,0.42)] md:hidden"
+          className="relative z-10 flex h-12 w-12 items-center justify-center rounded-lg border border-[#b98524]/45 bg-[#07110a]/72 shadow-[inset_0_0_18px_rgba(255,185,65,0.08),0_8px_24px_rgba(0,0,0,0.42)] lg:hidden"
         >
           <span className="sr-only">Menu</span>
           <span className="flex h-5 w-6 flex-col justify-between">
@@ -85,11 +88,11 @@ export default function Navbar() {
           </span>
         </button>
 
-        <div className="hidden w-12 shrink-0 md:block" />
+        <div className="hidden w-12 shrink-0 lg:block" />
       </div>
 
       <div
-        className={`fixed inset-0 z-10 bg-[#030805] md:hidden ${
+        className={`fixed inset-0 z-10 bg-[#030805] lg:hidden ${
           isMenuOpen
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-3 opacity-0"
@@ -109,7 +112,7 @@ export default function Navbar() {
               key={item.href}
               href={item.href}
               onClick={() => setIsMenuOpen(false)}
-              className="block border-b border-[#8f662d]/28 px-4 py-5 text-center font-poets text-3xl text-[#f7e8c4] transition-colors last:border-b-0 hover:bg-[#f0a22e]/10 hover:text-[#febc33]"
+              className="block border-b border-[#8f662d]/28 px-4 py-4 text-center font-poets text-2xl text-[#f7e8c4] transition-colors last:border-b-0 hover:bg-[#f0a22e]/10 hover:text-[#febc33] sm:text-3xl"
             >
               {item.label}
             </a>

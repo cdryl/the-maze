@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const featureCards = [
   {
-    title: "Endless Jungle Run",
+    title: "Chase The Record",
     description: "Keep moving forward and push your distance record.",
     icon: "/images/feature-trophy.png",
   },
@@ -22,7 +22,7 @@ export default function GameInfo() {
   return (
     <section
       id="about"
-      className="jungle-section relative isolate z-10 scroll-mt-20 px-4 py-16 text-center text-white sm:px-8 sm:py-18 lg:px-12"
+      className="jungle-section relative isolate z-10 scroll-mt-20 px-4 py-16 text-center text-white sm:px-8 sm:py-24 lg:px-12"
     >
       <Image
         src="/images/section-pattern.png"
@@ -33,7 +33,7 @@ export default function GameInfo() {
       />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_4%,rgba(223,151,47,0.22),transparent_28%),radial-gradient(circle_at_80%_42%,rgba(56,93,33,0.2),transparent_24%),linear-gradient(180deg,rgba(2,6,4,0.74),rgba(2,8,5,0.58)_42%,rgba(1,3,2,0.88))]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-44 bg-gradient-to-b from-[#030805] via-[#030805]/68 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-36 bg-gradient-to-t from-[#010302] via-[#010302]/58 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-60 bg-[linear-gradient(0deg,#000_0%,#000_30%,rgba(0,0,0,0.72)_64%,transparent_100%)]" />
       <div className="relative mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl">
           <h2 className="font-anton text-[clamp(2.35rem,8vw,5.8rem)] leading-[0.9] text-[#f4ead3] hero-title">
