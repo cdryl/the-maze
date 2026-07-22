@@ -50,10 +50,6 @@ export default function GameInfo() {
         <div className="mt-10 grid gap-4 sm:gap-5 md:grid-cols-3">
           {featureCards.map((card) => (
             <article key={card.title} className="game-info-card">
-              <span className="game-info-corner game-info-corner-tl" />
-              <span className="game-info-corner game-info-corner-tr" />
-              <span className="game-info-corner game-info-corner-bl" />
-              <span className="game-info-corner game-info-corner-br" />
               <Image
                 src={card.icon}
                 alt=""

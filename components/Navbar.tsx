@@ -24,12 +24,12 @@ export default function Navbar() {
   }, [isMenuOpen]);
 
   const navItems = [
-    { label: "Home", href: "#home" },
-    { label: "Prizes", href: "#prizes" },
-    { label: "Leaderboard", href: "#leaderboard" },
-    { label: "About", href: "#about" },
-    { label: "How To Play", href: "#how-to-play" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Home", href: "/#home" },
+    { label: "Prizes", href: "/#prizes" },
+    { label: "Leaderboard", href: "/#leaderboard" },
+    { label: "About", href: "/#about" },
+    { label: "How To Play", href: "/#how-to-play" },
+    { label: "FAQ", href: "/#faq" },
   ];
 
   return (

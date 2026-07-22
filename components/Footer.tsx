@@ -1,12 +1,13 @@
 import Image from "next/image";
 
 const footerLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Prizes", href: "#prizes" },
-  { label: "Leaderboard", href: "#leaderboard" },
-  { label: "About", href: "#about" },
-  { label: "How To Play", href: "#how-to-play" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Home", href: "/#home" },
+  { label: "Prizes", href: "/#prizes" },
+  { label: "Leaderboard", href: "/#leaderboard" },
+  { label: "About", href: "/#about" },
+  { label: "How To Play", href: "/#how-to-play" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Delete Account", href: "/delete-account" },
 ];
 
 export default function Footer() {
