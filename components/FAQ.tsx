@@ -1,27 +1,9 @@
-const faqItems = [
-  {
-    question: "When will The Maze be available?",
-    answer:
-      "The game has been submitted to the App Store and Google Play. Store availability will follow once the review process is complete.",
-  },
-  {
-    question: "What kind of game is it?",
-    answer:
-      "The Maze is an endless jungle runner where every run is about timing, distance, and surviving incoming arrows for as long as possible.",
-  },
-  {
-    question: "Will scores appear on the leaderboard?",
-    answer:
-      "Yes. The leaderboard highlights top explorers and is split into daily, weekly, and monthly rankings.",
-  },
-  {
-    question: "Is the game easy to learn?",
-    answer:
-      "Yes. The rules are simple and quick to understand, but pushing a high score takes focus, rhythm, and clean reactions.",
-  },
-];
+import { getFaqItems } from "@/lib/faq";
+import FaqList from "./FaqList";
 
-export default function FAQ() {
+export default async function FAQ() {
+  const faqItems = await getFaqItems();
+
   return (
     <section
       id="faq"
@@ -32,7 +14,7 @@ export default function FAQ() {
       <div className="pointer-events-none absolute inset-x-0 -top-px -z-10 h-40 bg-[linear-gradient(180deg,#000_0%,rgba(0,0,0,0.78)_30%,rgba(0,0,0,0.38)_64%,transparent_100%)] sm:h-72 sm:bg-[linear-gradient(180deg,#000_0%,#000_30%,rgba(0,0,0,0.72)_64%,transparent_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 -bottom-px -z-10 h-32 bg-gradient-to-t from-[#010302] via-[#010302]/46 via-48% to-transparent sm:h-48 sm:via-[#010302]/72" />
 
-      <div className="relative mx-auto max-w-4xl text-center mt-10">
+      <div className="relative mx-auto my-10 max-w-4xl text-center">
         <h2 className="font-anton text-[clamp(2.5rem,8vw,5.8rem)] leading-[0.9] text-[#f4ead3] hero-title">
           FAQ
         </h2>
@@ -41,19 +23,7 @@ export default function FAQ() {
           Quick answers before you step into the maze.
         </p>
 
-        <div className="mt-10 grid gap-4 text-left">
-          {faqItems.map((item) => (
-            <details key={item.question} className="faq-card group">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-poets text-lg text-[#ffe6ad] sm:text-xl">
-                <span>{item.question}</span>
-                <span className="faq-toggle" aria-hidden="true" />
-              </summary>
-              <p className="mt-4 font-poets text-[0.95rem] leading-7 text-[#f9e9c8] sm:text-lg">
-                {item.answer}
-              </p>
-            </details>
-          ))}
-        </div>
+        <FaqList initialItems={faqItems} />
       </div>
     </section>
   );

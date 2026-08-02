@@ -4,14 +4,17 @@ const steps = [
   {
     title: "Dodge Arrows",
     description: "React fast when traps fly out of the shadows.",
+    screenshot: "/images/ss1.jpg",
   },
   {
     title: "Stay In The Light",
     description: "Use weak torchlight to read the maze before it disappears.",
+    screenshot: "/images/ss2.jpg",
   },
   {
     title: "Push Your Run",
     description: "Keep moving forward and chase a longer distance every time.",
+    screenshot: "/images/ss3.jpg",
   },
 ];
 
@@ -44,16 +47,18 @@ export default function HowToPlay() {
         </div>
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {steps.map((step, index) => (
+          {steps.map((step) => (
             <article key={step.title} className="game-info-card">
               <div className="mx-auto flex aspect-[9/16] w-full max-w-[210px] items-center justify-center rounded-[22px] border-2 border-[#9a6d2e] bg-[linear-gradient(180deg,rgba(13,24,13,0.95),rgba(2,5,3,0.98))] p-3 shadow-[inset_0_0_0_1px_rgba(255,218,126,0.14),0_18px_36px_rgba(0,0,0,0.45)]">
-                <div className="flex h-full w-full flex-col items-center justify-center rounded-[16px] border border-[#31451f] bg-[radial-gradient(circle_at_50%_18%,rgba(225,150,42,0.18),transparent_34%),linear-gradient(180deg,#071108,#020403)] px-4 text-center">
-                  <span className="font-anton text-6xl leading-none text-[#f0b33e] drop-shadow-[0_4px_0_rgba(44,18,2,0.9)]">
-                    {index + 1}
-                  </span>
-                  <span className="mt-3 font-poets text-sm uppercase tracking-[0.18em] text-[#d9c987]">
-                    screenshot
-                  </span>
+                <div className="relative h-full w-full overflow-hidden rounded-[16px] border border-[#31451f] bg-[#020403]">
+                  <Image
+                    src={step.screenshot}
+                    alt={`${step.title} gameplay screenshot`}
+                    fill
+                    sizes="(min-width: 768px) 210px, 58vw"
+                    className="object-cover"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,224,141,0.08),transparent_22%,rgba(0,0,0,0.16)_100%)]" />
                 </div>
               </div>
 

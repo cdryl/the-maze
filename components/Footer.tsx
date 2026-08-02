@@ -7,6 +7,7 @@ const footerLinks = [
   { label: "About", href: "/#about" },
   { label: "How To Play", href: "/#how-to-play" },
   { label: "FAQ", href: "/#faq" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Delete Account", href: "/delete-account" },
 ];
 

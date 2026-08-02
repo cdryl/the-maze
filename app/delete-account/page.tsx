@@ -41,10 +41,6 @@ export default function DeleteAccountPage() {
           </p>
 
           <div className="game-info-card mx-auto mt-10 max-w-2xl">
-            <span className="game-info-corner game-info-corner-tl" />
-            <span className="game-info-corner game-info-corner-tr" />
-            <span className="game-info-corner game-info-corner-bl" />
-            <span className="game-info-corner game-info-corner-br" />
             <DeleteAccountForm />
           </div>
         </div>

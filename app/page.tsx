@@ -7,6 +7,8 @@ import Prizes from "@/components/Prizes";
 import SectionDivider from "@/components/SectionDivider";
 import Hero from "../components/Hero";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <div className="relative flex flex-1 flex-col overflow-x-hidden bg-[#030805]">
