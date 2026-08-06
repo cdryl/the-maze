@@ -158,8 +158,8 @@ export default function PrivacyPolicyPage() {
               time via our in-app/website deletion tool:
             </p>
             <p>
-              <a href="https://the-maze-nu.vercel.app/delete-account" target="_blank" rel="noreferrer">
-                https://the-maze-nu.vercel.app/delete-account
+              <a href="https://www.mazerunnergames.com/delete-account" target="_blank" rel="noreferrer">
+                https://www.mazerunnergames.com/delete-account
               </a>
             </p>
             <p>
